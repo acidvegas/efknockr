@@ -208,7 +208,7 @@ class probe:
 		if self.proxy:
 			options = {
 				'proxy'      : aiosocks.Socks5Addr(self.proxy.split(':')[0], int(self.proxy.split(':')[1])),
-				'proxy_auth' : None,
+				'proxy_auth' : None, # Todo: Add authentication support using aiosocks.Socks5Auth('login', 'pwd')
 				'dst'        : (self.server,6667) if fallback else (self.server,6697),
 				'limit'      : 1024,
 				'ssl'        : None if fallback else ssl_ctx(),
