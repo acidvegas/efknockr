@@ -22,6 +22,8 @@ class settings:
 	part_msg             = 'Smell ya l8r' # Send a custom part message when leaving channels
 	proxies              = False          # Connect with proxies
 	proxies_only         = False          # Only connect with proxies
+	proxies_scan         = False          # Scan for new proxies
+	proxies_local        = False          # Use proxies from proxies.txt
 	register             = True           # Register with NickServ before joining channels
 	register_chan        = '#EFKnockr'    # Set to None to disable channel registrations
 	register_chan_topic = 'EFK'           # Topic to set for the registered channel
@@ -54,6 +56,7 @@ messages = (
 
 class bad:
 	donotscan = (
+		'irc.terahertz.net', '165.254.255.25', '2001:728:1808::25',
 		'irc.dronebl.org',       'irc.alphachat.net',
 		'5.9.164.48',            '45.32.74.177',          '104.238.146.46',               '149.248.55.130',
 		'2001:19f0:6001:1dc::1', '2001:19f0:b001:ce3::1', '2a01:4f8:160:2501:48:164:9:5', '2001:19f0:6401:17c::1'
@@ -206,9 +209,11 @@ class probe:
 
 	async def connect(self, fallback=False):
 		if self.proxy:
+			auth = self.proxy.split('@')[0].split(':') if '@' in self.proxy else None
+			proxy_ip, proxy_port = self.proxy.split('@')[1].split(':') if '@' in self.proxy else self.proxy.split(':')
 			options = {
-				'proxy'      : aiosocks.Socks5Addr(self.proxy.split(':')[0], int(self.proxy.split(':')[1])),
-				'proxy_auth' : None, # Todo: Add authentication support using aiosocks.Socks5Auth('login', 'pwd')
+				'proxy'      : aiosocks.Socks5Addr(proxy_ip, proxy_port),
+				'proxy_auth' : aiosocks.Socks5Auth(*auth) if auth else None,
 				'dst'        : (self.server,6667) if fallback else (self.server,6697),
 				'limit'      : 1024,
 				'ssl'        : None if fallback else ssl_ctx(),
@@ -525,20 +530,26 @@ async def main_a(targets):
 	sema = asyncio.BoundedSemaphore(throttle.threads) # B O U N D E D   S E M A P H O R E   G A N G
 	jobs = list()
 	if settings.proxies:
-		proxies = None
-		del all_proxies[:len(all_proxies)]
-		del good_proxies[:len(good_proxies)]
-		while not good_proxies:
-			debug('scanning for fresh Socks5 proxies...')
-			proxies = get_proxies()
-			if proxies:
-				debug(f'testing {len(proxies):,} proxies...')
-				await main_b(proxies)
-				if not good_proxies:
+		if settings.proxies_scan:
+			proxies = None
+			del all_proxies[:len(all_proxies)]
+			del good_proxies[:len(good_proxies)]
+			while not good_proxies:
+				debug('scanning for fresh Socks5 proxies...')
+				proxies = get_proxies()
+				if proxies:
+					debug(f'testing {len(proxies):,} proxies...')
+					await main_b(proxies)
+					if not good_proxies:
+						await asyncio.sleep(300)
+				else:
 					await asyncio.sleep(300)
-			else:
-				await asyncio.sleep(300)
-		debug(f'found {len(good_proxies):,} proxies')
+			debug(f'found {len(good_proxies):,} proxies')
+		elif settings.proxies_local:
+			with open('proxies.txt', 'r') as f:
+				good_proxies = [line.rstrip() for line in f.readlines() if line]
+		else:
+			raise SystemExit('error: invalid proxy mode (must use either proxy scanning or local proxies)')
 	for target in targets:
 		try:
 			ipaddress.IPv4Address(target)
@@ -546,7 +557,7 @@ async def main_a(targets):
 			error('invalid ip address', target)
 		else:
 			if settings.proxies:
-				for proxy in good_proxies:
+				for proxy in good_proxies: # Todo: we should check if this is empty before running
 					jobs.append(asyncio.ensure_future(probe(sema, target, proxy).run()))
 			if not settings.proxies_only:
 				jobs.append(asyncio.ensure_future(probe(sema, target).run()))
