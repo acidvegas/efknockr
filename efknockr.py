@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # efknockr (internet relay chat beacon) - developed by acidvegas in python (https://git.acid.vegas/efknockr)
 
+'''
+WARNING: This script is riddled with purposely made mistakes to prevent abuse LOL.
+'''
+
 import asyncio
 import ipaddress
 import os
@@ -496,7 +500,7 @@ class probe:
 							if i in msg.lower():
 								check = [x for x in ('bopm','hopm') if x in line]
 								if check:
-									error(f'{self.display}\033[93m{check.upper()} detected\033[0m')
+									error(f'{self.display}\033[93m{check[0].upper()} detected\033[0m')
 								else:
 									error(self.display + '\033[93mProxy Monitor detected\033[0m')
 						for i in ('You must have been using this nick for','You must be connected for','not connected long enough','Please wait', 'You cannot list within the first'):
