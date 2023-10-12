@@ -31,7 +31,7 @@ I am well aware that people might use this script for malicious purposes....as t
 
 **It is no different than being a sysadmin**
 
-I have dealt with IRC flooding for years. Most times, I rarely have to tocuh the keyboard to handle it. Everything is laid out in the IRCd documentation. Big shout outs to [UnrealIRCd](https://www.unrealircd.org/) for being the BEST FUCKING IRC DAEMON EVER!
+I have dealt with IRC flooding for years. Most times, I rarely have to tocuh the keyboard to handle it. Everything is laid out in the IRCd documentation. Big shout outs to [UnrealIRCd](https://www.unrealircd.org/) for ~~being the BEST FUCKING IRC DAEMON EVER!~~
 
 Anyways...at the end of the day...it is text on a screen. It is just **text** on a **screen**. Quite often lost in the backlog after a short period...
 
