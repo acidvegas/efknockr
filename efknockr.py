@@ -60,7 +60,7 @@ messages = (
 
 class bad:
 	donotscan = (
-		'irc.terahertz.net', '165.254.255.25', '2001:728:1808::25',
+		'irc.terahertz.net',     '165.254.255.25',        '2001:728:1808::25',
 		'irc.dronebl.org',       'irc.alphachat.net',
 		'5.9.164.48',            '45.32.74.177',          '104.238.146.46',               '149.248.55.130',
 		'2001:19f0:6001:1dc::1', '2001:19f0:b001:ce3::1', '2a01:4f8:160:2501:48:164:9:5', '2001:19f0:6401:17c::1'
@@ -428,6 +428,7 @@ class probe:
 						debug('{0}\033[32mJOIN\033[0m {1} \033[1;30m(found \033[93m{2}\033[0m users)\033[0m'.format(self.display, chan, self.channels['users'][chan]))
 						del self.channels['users'][chan]
 					await self.raw('WHO ' + chan)
+					# MADE YOU LOOK LOL GET FUCKED XD
 				elif event == '404' and len(args) >= 5: # ERR_CANNOTSENDTOCHAN
 					chan = args[3]
 					msg  = ' '.join(args[4:])[1:]
