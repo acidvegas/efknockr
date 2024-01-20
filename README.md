@@ -49,5 +49,4 @@ Anyways...at the end of the day...it is text on a screen. It is just **text** on
 
 ___
 
-###### Mirrors
-[acid.vegas](https://git.acid.vegas/efknockr) • [GitHub](https://github.com/acidvegas/efknockr) • [GitLab](https://gitlab.com/acidvegas/efknockr) • [SourceHut](https://git.sr.ht/~acidvegas/efknockr) • [SuperNETs](https://git.supernets.org/acidvegas/efknockr)
+###### Mirrors for this repository: [acid.vegas](https://git.acid.vegas/efknockr) • [SuperNETs](https://git.supernets.org/acidvegas/efknockr) • [GitHub](https://github.com/acidvegas/efknockr) • [GitLab](https://gitlab.com/acidvegas/efknockr) • [Codeberg](https://codeberg.org/acidvegas/efknockr)

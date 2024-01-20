@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# efknockr (internet relay chat beacon) - developed by acidvegas in python (https://git.acid.vegas/efknockr)
+# efknockr (internet relay chat drive-by tool) - developed by acidvegas in python (https://git.acid.vegas/efknockr)
 
 '''
 WARNING: This script is riddled with purposely made mistakes to prevent abuse LOL.
